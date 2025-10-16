@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, Suspense } from 'react'
+import React, { useState, useEffect, useRef, Suspense, useLayoutEffect } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { OrbitControls, useGLTF, Environment, ContactShadows } from '@react-three/drei'
 import { Button } from './ui/button'
@@ -26,7 +26,7 @@ class ErrorBoundary extends React.Component {
   render() {
     if (this.state.hasError) {
       return (
-        <div className="w-full h-screen flex items-center justify-center bg-gradient-to-b from-sky-200 to-green-200">
+        <div className="w-full h-screen flex items-center justify-center bg-gradient-to-b from-sky-200">
           <div className="text-center p-8 bg-white/90 rounded-lg shadow-lg max-w-md">
             <h2 className="text-2xl font-bold text-gray-800 mb-4">Forest Loading Error</h2>
             <p className="text-gray-600 mb-4">
@@ -104,7 +104,7 @@ function ModelPreloader({ onLoadingComplete }) {
 // Loading fallback component
 function LoadingFallback() {
   return (
-    <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-b from-sky-200 to-green-200 z-50">
+    <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-b from-sky-200 z-50">
       <div className="flex items-end space-x-4">
         {/* Three bouncing trees */}
         <div className="flex flex-col items-center">
@@ -136,6 +136,15 @@ function Tree({ position, scale, variant, rotation }) {
   // If GLTF model loaded successfully, use it
   if (gltf && gltf.scene) {
     const clonedScene = gltf.scene.clone()
+    
+    // Enable shadows on all meshes in the GLTF scene
+    clonedScene.traverse((child) => {
+      if (child.isMesh) {
+        child.castShadow = true
+        child.receiveShadow = true
+      }
+    })
+    
     return (
       <primitive 
         ref={meshRef}
@@ -179,6 +188,15 @@ function Flower({ position, scale, type }) {
   // If GLTF model loaded successfully, use it
   if (gltf && gltf.scene) {
     const clonedScene = gltf.scene.clone()
+    
+    // Enable shadows on all meshes in the GLTF scene
+    clonedScene.traverse((child) => {
+      if (child.isMesh) {
+        child.castShadow = true
+        child.receiveShadow = true
+      }
+    })
+    
     return (
       <primitive 
         ref={meshRef}
@@ -186,6 +204,7 @@ function Flower({ position, scale, type }) {
         position={position} 
         scale={scale}
         castShadow
+        receiveShadow
       />
     )
   }
@@ -213,6 +232,15 @@ function Mushroom({ position, scale, type }) {
   // If GLTF model loaded successfully, use it
   if (gltf && gltf.scene) {
     const clonedScene = gltf.scene.clone()
+    
+    // Enable shadows on all meshes in the GLTF scene
+    clonedScene.traverse((child) => {
+      if (child.isMesh) {
+        child.castShadow = true
+        child.receiveShadow = true
+      }
+    })
+    
     return (
       <primitive 
         ref={meshRef}
@@ -220,6 +248,7 @@ function Mushroom({ position, scale, type }) {
         position={position} 
         scale={scale}
         castShadow
+        receiveShadow
       />
     )
   }
@@ -241,6 +270,15 @@ function Log({ position, scale, type }) {
   // If GLTF model loaded successfully, use it
   if (gltf && gltf.scene) {
     const clonedScene = gltf.scene.clone()
+    
+    // Enable shadows on all meshes in the GLTF scene
+    clonedScene.traverse((child) => {
+      if (child.isMesh) {
+        child.castShadow = true
+        child.receiveShadow = true
+      }
+    })
+    
     return (
       <primitive 
         ref={meshRef}
@@ -248,6 +286,7 @@ function Log({ position, scale, type }) {
         position={position} 
         scale={scale}
         castShadow
+        receiveShadow
       />
     )
   }
@@ -275,6 +314,15 @@ function Plant({ position, scale, type }) {
   // If GLTF model loaded successfully, use it
   if (gltf && gltf.scene) {
     const clonedScene = gltf.scene.clone()
+    
+    // Enable shadows on all meshes in the GLTF scene
+    clonedScene.traverse((child) => {
+      if (child.isMesh) {
+        child.castShadow = true
+        child.receiveShadow = true
+      }
+    })
+    
     return (
       <primitive 
         ref={meshRef}
@@ -282,6 +330,7 @@ function Plant({ position, scale, type }) {
         position={position} 
         scale={scale}
         castShadow
+        receiveShadow
       />
     )
   }
@@ -297,6 +346,64 @@ function Plant({ position, scale, type }) {
 
 // Ground component - separated layers to prevent z-fighting
 function Ground({ position, size }) {
+  const geometryRef = useRef()
+  
+  // Generate vertex colors for gradient effect
+  useLayoutEffect(() => {
+    if (geometryRef.current) {
+      const geometry = geometryRef.current
+      const colors = []
+      
+      // Get position attribute
+      const positionAttribute = geometry.getAttribute('position')
+      const vertexCount = positionAttribute.count
+      
+      // Generate gradient colors based on position
+      for (let i = 0; i < vertexCount; i++) {
+        const x = positionAttribute.getX(i)
+        const z = positionAttribute.getZ(i)
+        
+        // Normalize coordinates to 0-1 range
+        const normalizedX = (x + size / 2) / size
+        const normalizedZ = (z + size / 2) / size
+        
+        // Create gradient from center to edges
+        const distanceFromCenter = Math.sqrt(
+          Math.pow(normalizedX - 0.5, 2) + Math.pow(normalizedZ - 0.5, 2)
+        ) * 2 // Scale to 0-1
+        
+        // Base green colors with variation (lighter for better shadow contrast)
+        const baseGreen = new THREE.Color('#6A9C79')
+        const lightGreen = new THREE.Color('#7AAC89')
+        const darkGreen = new THREE.Color('#5A8C69')
+        const limeGreen = new THREE.Color('#8ABC99')
+        
+        // Mix colors based on position and add some randomness
+        let color
+        if (distanceFromCenter < 0.3) {
+          // Center area - mix of light and lime green
+          color = lightGreen.clone().lerp(limeGreen, Math.random() * 0.5)
+        } else if (distanceFromCenter < 0.7) {
+          // Middle area - mix of base and light green
+          color = baseGreen.clone().lerp(lightGreen, Math.random() * 0.6)
+        } else {
+          // Edge area - mix of base and dark green
+          color = baseGreen.clone().lerp(darkGreen, Math.random() * 0.4)
+        }
+        
+        // Add some subtle variation
+        const variation = (Math.random() - 0.5) * 0.2
+        color.r = Math.max(0, Math.min(1, color.r + variation))
+        color.g = Math.max(0, Math.min(1, color.g + variation))
+        color.b = Math.max(0, Math.min(1, color.b + variation))
+        
+        colors.push(color.r, color.g, color.b)
+      }
+      
+      geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3))
+    }
+  }, [size])
+  
   return (
     <group position={position}>
       {/* Thick base layer (brown earth) - positioned lower */}
@@ -308,6 +415,7 @@ function Ground({ position, size }) {
         <meshLambertMaterial 
           color="#8B7355"
           roughness={0.8}
+          transparent={false}
         />
       </mesh>
       
@@ -317,10 +425,14 @@ function Ground({ position, size }) {
         rotation={[-Math.PI / 2, 0, 0]} 
         receiveShadow
       >
-        <planeGeometry args={[size, size]} />
+        <planeGeometry ref={geometryRef} args={[size, size, 32, 32]} />
         <meshLambertMaterial 
-          color="#4A7C59"
+          color="#6A9C79"
           roughness={0.7}
+          emissive="#2a4d2a"
+          emissiveIntensity={0.1}
+          transparent={false}
+          vertexColors={true}
         />
       </mesh>
     </group>
@@ -331,26 +443,50 @@ function Ground({ position, size }) {
 function ForestScene({ trees, flowers, mushrooms, logs, plants, groundTiles }) {
   return (
     <>
-      {/* Lighting */}
-      <ambientLight intensity={0.4} />
+      {/* Enhanced Lighting System */}
+      {/* Ambient light for overall brightness */}
+      <ambientLight intensity={0.3} color="#ffffff" />
+      
+      {/* Main directional light (sun) */}
       <directionalLight 
-        position={[10, 10, 5]} 
-        intensity={1} 
+        position={[20, 25, 15]} 
+        intensity={2.0} 
+        color="#fff8dc"
         castShadow
         shadow-mapSize-width={2048}
         shadow-mapSize-height={2048}
-        shadow-camera-far={50}
-        shadow-camera-left={-20}
-        shadow-camera-right={20}
-        shadow-camera-top={20}
-        shadow-camera-bottom={-20}
+        shadow-camera-far={200}
+        shadow-camera-left={-100}
+        shadow-camera-right={100}
+        shadow-camera-top={100}
+        shadow-camera-bottom={-100}
+        shadow-bias={-0.0001}
+        shadow-normalBias={0.02}
       />
-      <pointLight position={[-10, -10, -10]} intensity={0.2} />
+      
+      {/* Secondary directional light for fill */}
+      <directionalLight 
+        position={[-10, 15, -5]} 
+        intensity={0.4} 
+        color="#e6f3ff"
+      />
+      
+      {/* Hemisphere light for natural sky/ground lighting */}
       <hemisphereLight 
         skyColor="#87CEEB" 
         groundColor="#90EE90" 
-        intensity={0.3} 
+        intensity={0.8} 
       />
+      
+      {/* Point light for additional warmth */}
+      <pointLight 
+        position={[0, 8, 0]} 
+        intensity={0.3} 
+        color="#fff8dc"
+        distance={50}
+        decay={2}
+      />
+
 
       {/* Ground plane */}
       {groundTiles.map((tile, index) => (
@@ -496,11 +632,11 @@ const Forest3D = ({ tokens, onComplete, onError }) => {
       // For 1 tree: small ground (4x4)
       // For many trees: larger ground but keep density high
       const baseSize = 4 // Minimum size for 1 tree
-      const maxSize = 25 // Maximum size for many trees
+      const maxSize = 125 // Maximum size for many trees (increased 5x from 25)
       const groundSize = Math.min(baseSize + Math.sqrt(treesNeeded) * 2, maxSize)
       
       // Calculate forest area (smaller than ground for density)
-      const forestArea = groundSize * 0.7 // Use 70% of ground area for trees
+      const forestArea = groundSize * 0.9 // Use 90% of ground area for trees (reduced margin)
       
       // Generate a single ground plane with dynamic size
       newGroundTiles.push({
@@ -624,7 +760,7 @@ const Forest3D = ({ tokens, onComplete, onError }) => {
                 <TreePine className="h-6 w-6 text-green-600" />
               </div>
               <div>
-                <h2 className="text-2xl font-bold text-gray-800">Your 3D Oak Forest</h2>
+                <h2 className="text-2xl font-bold text-gray-800">Your Usage Forest</h2>
                 <p className="text-sm text-gray-600">Drag to explore your forest from any angle</p>
               </div>
             </div>
@@ -639,24 +775,8 @@ const Forest3D = ({ tokens, onComplete, onError }) => {
                 <span className="font-semibold">{(tokens * 0.09 / 1000).toFixed(2)} kg</span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-gray-600">Oak trees planted:</span>
+                <span className="text-gray-600">Trees needed to offset usage:</span>
                 <span className="font-semibold text-green-600">{trees.length}</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-gray-600">Flowers added:</span>
-                <span className="font-semibold text-pink-600">{flowers.length}</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-gray-600">Mushrooms:</span>
-                <span className="font-semibold text-red-600">{mushrooms.length}</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-gray-600">Logs:</span>
-                <span className="font-semibold text-amber-600">{logs.length}</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-gray-600">Plants:</span>
-                <span className="font-semibold text-green-500">{plants.length}</span>
               </div>
             </div>
             
@@ -674,11 +794,11 @@ const Forest3D = ({ tokens, onComplete, onError }) => {
       <ErrorBoundary onError={onError}>
         <Canvas
           camera={{ 
-            position: [15, 15, 15], 
+            position: [35, 35, 35], 
             fov: 50 
           }}
           shadows
-          className="bg-gradient-to-b from-sky-200 to-green-200"
+          className="bg-gradient-to-b from-sky-200"
         >
           <Suspense fallback={null}>
             <ModelPreloader onLoadingComplete={handleAllModelsLoaded} />
@@ -697,8 +817,8 @@ const Forest3D = ({ tokens, onComplete, onError }) => {
             enablePan={true}
             enableZoom={true}
             enableRotate={true}
-            minDistance={5}
-            maxDistance={50}
+            minDistance={10}
+            maxDistance={150}
             minPolarAngle={Math.PI / 6}
             maxPolarAngle={Math.PI / 2.2}
           />

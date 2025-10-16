@@ -19,7 +19,7 @@ const ForestFallback = ({ tokens, onComplete }) => {
   }, [])
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-sky-200 to-green-200 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-b from-sky-200 relative overflow-hidden">
       {/* Simple 2D forest representation */}
       <div className="absolute inset-0 flex items-center justify-center">
         <div className="text-center">
