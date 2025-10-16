@@ -1,0 +1,107 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+@import "tailwindcss";
+
+@theme {
+  /* HSL design tokens mapped to Tailwind color names for v4 */
+  --color-background: 0 0% 94%;            /* off-white */
+  --color-foreground: 120 27% 18%;          /* brunswick green */
+
+  --color-card: 0 0% 100%;
+  --color-card-foreground: 120 27% 18%;
+
+  --color-popover: 0 0% 100%;
+  --color-popover-foreground: 120 27% 18%;
+
+  --color-primary: 119 24% 35%;             /* fern green */
+  --color-primary-foreground: 0 0% 100%;
+
+  --color-secondary: 76 21% 57%;            /* sage */
+  --color-secondary-foreground: 120 27% 18%;
+
+  --color-muted: 31 24% 87%;
+  --color-muted-foreground: 120 24% 30%;
+
+  --color-accent: 119 24% 35%;
+  --color-accent-foreground: 0 0% 100%;
+
+  --color-destructive: 0 84.2% 60.2%;
+  --color-destructive-foreground: 0 0% 100%;
+
+  --color-border: 31 21% 80%;
+  --color-input: 0 0% 90%;
+  --color-ring: 119 24% 35%;
+
+  --radius: 0.75rem;
+}
+
+:root {
+  /* Non-color tokens */
+  --gradient-hero: linear-gradient(135deg, hsl(120 27% 18%), hsl(120 24% 30%));
+  --gradient-earth: linear-gradient(180deg, hsl(0 0% 94%), hsl(76 21% 57%));
+  --shadow-soft: 0 8px 32px -8px hsl(120 27% 18% / 0.15);
+  --shadow-elevated: 0 12px 48px -12px hsl(120 27% 18% / 0.25);
+  --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dark {
+  --color-background: 120 27% 18%;
+  --color-foreground: 31 24% 87%;
+
+  --color-card: 120 24% 30%;
+  --color-card-foreground: 31 24% 87%;
+
+  --color-popover: 120 24% 30%;
+  --color-popover-foreground: 31 24% 87%;
+
+  --color-primary: 76 21% 57%;
+  --color-primary-foreground: 120 27% 18%;
+
+  --color-secondary: 120 24% 30%;
+  --color-secondary-foreground: 31 24% 87%;
+
+  --color-muted: 120 24% 30%;
+  --color-muted-foreground: 76 21% 65%;
+
+  --color-accent: 119 24% 35%;
+  --color-accent-foreground: 31 24% 87%;
+
+  --color-destructive: 0 62.8% 50%;
+  --color-destructive-foreground: 31 24% 87%;
+
+  --color-border: 120 24% 30%;
+  --color-input: 120 24% 30%;
+  --color-ring: 76 21% 57%;
+}
+
+@layer base {
+  html {
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-primary hover:bg-primary/90 text-primary-foreground font-medium px-6 py-3 rounded-lg transition-colors duration-200;
+  }
+
+  .btn-secondary {
+    @apply bg-secondary hover:bg-secondary/90 text-secondary-foreground font-medium px-6 py-3 rounded-lg transition-colors duration-200;
+  }
+
+  .card {
+    @apply bg-card text-card-foreground rounded-xl shadow-lg p-6;
+    box-shadow: var(--shadow-soft);
+  }
+
+  .input-field {
+    @apply w-full px-4 py-3 rounded-lg bg-white border border-input text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent;
+  }
+}
