@@ -1,11 +1,29 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const ShootingStars = () => {
   const containerRef = useRef(null);
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  // Check for dark mode
+  useEffect(() => {
+    const checkDarkMode = () => {
+      setIsDarkMode(document.documentElement.classList.contains('dark'));
+    };
+    
+    checkDarkMode();
+    
+    const observer = new MutationObserver(checkDarkMode);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class']
+    });
+    
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     const container = containerRef.current;
-    if (!container) return;
+    if (!container || !isDarkMode) return;
 
     // Generate random stars for the upper 1/3 of the screen
     const generateStars = () => {
@@ -172,8 +190,10 @@ const ShootingStars = () => {
       clearInterval(interval);
       window.removeEventListener('resize', handleResize);
     };
-  }, []);
+  }, [isDarkMode]);
 
+  if (!isDarkMode) return null;
+  
   return <div ref={containerRef} className="absolute inset-0 pointer-events-none" style={{ zIndex: 3 }} />;
 };
 
