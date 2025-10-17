@@ -34,6 +34,328 @@
 
     --radius: 0.75rem;
   }
+
+  .dark {
+    --background: 0 0% 19%; /* #303030 */
+    --foreground: 0 0% 95%; /* light gray */
+
+    --card: 0 0% 25%; /* slightly lighter than background */
+    --card-foreground: 0 0% 95%;
+
+    --popover: 0 0% 25%;
+    --popover-foreground: 0 0% 95%;
+
+    --primary: 119 24% 45%; /* lighter fern green for dark mode */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 0 0% 35%; /* darker gray for better contrast */
+    --secondary-foreground: 0 0% 95%;
+
+    --muted: 0 0% 30%; /* darker muted background */
+    --muted-foreground: 0 0% 65%; /* dimmer text for better contrast */
+
+    --accent: 119 24% 45%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 0 0% 100%; /* white borders in dark mode */
+    --input: 0 0% 30%; /* darker input backgrounds */
+    --ring: 119 24% 45%;
+  }
+
+  /* Force dark mode background */
+  .dark body {
+    background-color: #303030 !important;
+  }
+
+  .dark .min-h-screen {
+    background-color: #303030 !important;
+  }
+
+  /* Forest page dark mode gradient with stars */
+  .dark .forest-background {
+    background: linear-gradient(180deg, 
+      #0a0a1a 0%,     /* Very dark navy at top */
+      #1a1a2e 25%,    /* Dark blue */
+      #0f3460 50%,    /* Medium blue */
+      #533483 75%,    /* Purple transition */
+      #e94560 100%    /* Warm orange at bottom */
+    );
+    position: relative;
+    overflow: hidden;
+  }
+
+  .dark .forest-background::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+      radial-gradient(1px 1px at 20px 30px, #fff, transparent),
+      radial-gradient(1px 1px at 40px 70px, #fff, transparent),
+      radial-gradient(1px 1px at 90px 40px, #fff, transparent),
+      radial-gradient(1px 1px at 130px 80px, #fff, transparent),
+      radial-gradient(1px 1px at 160px 30px, #fff, transparent),
+      radial-gradient(1px 1px at 200px 60px, #fff, transparent),
+      radial-gradient(1px 1px at 250px 20px, #fff, transparent),
+      radial-gradient(1px 1px at 300px 70px, #fff, transparent),
+      radial-gradient(1px 1px at 350px 40px, #fff, transparent),
+      radial-gradient(1px 1px at 400px 80px, #fff, transparent),
+      radial-gradient(1px 1px at 450px 30px, #fff, transparent),
+      radial-gradient(1px 1px at 500px 60px, #fff, transparent),
+      radial-gradient(1px 1px at 550px 20px, #fff, transparent),
+      radial-gradient(1px 1px at 600px 70px, #fff, transparent),
+      radial-gradient(1px 1px at 650px 40px, #fff, transparent),
+      radial-gradient(1px 1px at 700px 80px, #fff, transparent),
+      radial-gradient(1px 1px at 750px 30px, #fff, transparent),
+      radial-gradient(1px 1px at 800px 60px, #fff, transparent),
+      radial-gradient(1px 1px at 850px 20px, #fff, transparent),
+      radial-gradient(1px 1px at 900px 70px, #fff, transparent);
+    background-repeat: repeat;
+    background-size: 100px 100px;
+    opacity: 0.8;
+    pointer-events: none;
+  }
+
+  /* Calculator dark mode improvements */
+  .dark .instructions-box {
+    background-color: hsl(0 0% 20%) !important;
+    border-color: hsl(0 0% 35%) !important;
+    color: hsl(0 0% 80%) !important;
+  }
+
+  .dark .instructions-box h3 {
+    color: hsl(0 0% 90%) !important;
+  }
+
+  .dark .instructions-box ol {
+    color: hsl(0 0% 80%) !important;
+  }
+
+  .dark .instructions-box li {
+    color: hsl(0 0% 80%) !important;
+  }
+
+  .dark .tab-content {
+    background-color: hsl(0 0% 20%) !important;
+  }
+
+  .dark .input-field {
+    background-color: hsl(0 0% 25%) !important;
+    border-color: hsl(0 0% 35%) !important;
+    color: hsl(0 0% 90%) !important;
+  }
+
+  .dark .input-field::placeholder {
+    color: hsl(0 0% 60%) !important;
+  }
+
+  .dark .input-field:focus {
+    border-color: hsl(119 24% 45%) !important;
+    box-shadow: 0 0 0 2px hsl(119 24% 45% / 0.2) !important;
+  }
+
+  /* Card dark mode */
+  .dark .bg-white {
+    background-color: hsl(0 0% 25%) !important;
+  }
+
+  /* Text dark mode */
+  .dark .text-gray-600 {
+    color: hsl(0 0% 80%) !important;
+  }
+
+  .dark .text-gray-800 {
+    color: hsl(0 0% 90%) !important;
+  }
+
+  /* Label dark mode */
+  .dark label {
+    color: hsl(0 0% 90%) !important;
+  }
+
+  /* Combobox dark mode */
+  .dark button[role="combobox"] {
+    background-color: hsl(0 0% 25%) !important;
+    border-color: hsl(0 0% 35%) !important;
+    color: hsl(0 0% 90%) !important;
+  }
+
+  /* Button dark mode */
+  .dark button:not(.cta-button) {
+    background-color: hsl(0 0% 25%) !important;
+    border-color: hsl(0 0% 35%) !important;
+    color: hsl(0 0% 90%) !important;
+  }
+
+  /* Calculate button specific color */
+  .dark button[type="submit"] {
+    background-color: hsl(118.6 24.29% 34.71%) !important;
+    border-color: hsl(118.6 24.29% 34.71%) !important;
+    color: white !important;
+  }
+
+  .dark button[type="submit"]:hover {
+    background-color: hsl(118.6 24.29% 30%) !important;
+    border-color: hsl(118.6 24.29% 30%) !important;
+  }
+
+  /* Helper text dark mode */
+  .dark p.text-xs {
+    color: hsl(0 0% 70%) !important;
+  }
+
+  /* Tab styling for dark mode - shadcn default behavior */
+  .dark .bg-gray-100 {
+    background-color: hsl(0 0% 20%) !important; /* Dark tab list background */
+  }
+
+  .dark [data-state="active"] {
+    background-color: hsl(0 0% 35%) !important; /* Light background for selected tab */
+    color: hsl(0 0% 10%) !important; /* Dark text on light background */
+    border-color: hsl(0 0% 40%) !important;
+  }
+
+  .dark [data-state="inactive"] {
+    background-color: transparent !important; /* Transparent for unselected tabs */
+    color: hsl(0 0% 70%) !important; /* Muted text */
+    border-color: transparent !important;
+  }
+
+  /* Remove any tab content background */
+  .dark [role="tabpanel"] {
+    background-color: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+
+  /* Forest page background override - dark gradient */
+  .dark .bg-gradient-to-b.from-sky-200 {
+    background: linear-gradient(to bottom, 
+      #0a0a1a 0%,     /* Very dark navy at top */
+      #1a1a2e 25%,    /* Dark blue */
+      #0f3460 50%,    /* Medium blue */
+      #533483 75%,    /* Purple transition */
+      #e94560 100%    /* Warm orange at bottom */
+    ) !important;
+    position: relative;
+    overflow: hidden;
+  }
+
+
+  /* Twinkling animation for stars */
+  @keyframes twinkle {
+    0% { opacity: 0.3; }
+    100% { opacity: 1; }
+  }
+
+  /* Footer animation */
+  .footer-collapsed {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+
+  .footer-expanded {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  /* Forest page cards dark theme - target specific classes */
+  .dark .forest-background .bg-white\/80,
+  .dark .forest-background .bg-white\/90 {
+    background-color: hsl(0 0% 15%) !important;
+    border: 1px solid hsl(0 0% 25%) !important;
+  }
+
+  .dark .forest-background .text-gray-600 {
+    color: hsl(0 0% 70%) !important;
+  }
+
+  .dark .forest-background .text-gray-800 {
+    color: hsl(0 0% 90%) !important;
+  }
+
+  .dark .forest-background h2,
+  .dark .forest-background h3 {
+    color: hsl(0 0% 95%) !important;
+  }
+
+  .dark .forest-background p,
+  .dark .forest-background span {
+    color: hsl(0 0% 80%) !important;
+  }
+
+  .dark .forest-background .font-semibold {
+    color: hsl(0 0% 90%) !important;
+  }
+
+  .dark .forest-background .text-green-600 {
+    color: hsl(119 24% 45%) !important;
+  }
+
+  .dark .forest-background .bg-green-100 {
+    background-color: hsl(119 24% 20%) !important;
+  }
+
+  /* Header and footer border overrides */
+  .dark .border-border {
+    border-color: hsl(0 0% 100%) !important;
+  }
+
+  .dark .border-t {
+    border-top-color: hsl(0 0% 100%) !important;
+  }
+
+  .dark .border-b {
+    border-bottom-color: hsl(0 0% 100%) !important;
+  }
+
+  /* Call to Action dark mode improvements */
+  .dark .cta-section {
+    background-color: hsl(0 0% 19%) !important; /* #303030 */
+  }
+
+  .dark .cta-card {
+    background-color: hsl(0 0% 25%) !important;
+    border-color: hsl(0 0% 35%) !important;
+  }
+
+  .dark .cta-card:hover {
+    background-color: hsl(0 0% 28%) !important;
+  }
+
+  .dark .cta-button {
+    background-color: hsl(119 24% 45%) !important;
+    color: white !important;
+  }
+
+  .dark .cta-button:hover {
+    background-color: hsl(119 24% 40%) !important;
+  }
+
+  .dark .cta-every-action {
+    background-color: hsl(119 24% 45%) !important;
+  }
+
+  /* Call to Action text color for dark mode */
+  .dark .cta-section h1,
+  .dark .cta-section h2,
+  .dark .cta-section h3,
+  .dark .cta-section p,
+  .dark .cta-section .text-gray-600,
+  .dark .cta-section .text-gray-800 {
+    color: white !important;
+  }
+
+  .dark .cta-card h3,
+  .dark .cta-card p,
+  .dark .cta-card .text-gray-600 {
+    color: white !important;
+  }
 }
 
 :root {
@@ -140,7 +462,7 @@
 
   .input-field:focus {
     outline: none;
-    ring: 2px solid hsl(var(--ring));
+    box-shadow: 0 0 0 2px hsl(var(--ring));
     border-color: transparent;
   }
 

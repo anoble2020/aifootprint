@@ -11,26 +11,36 @@ import {
   PopoverTrigger,
 } from "./popover"
 
-const platforms = [
+const defaultPlatforms = [
   {
     value: "cursor",
     label: "Cursor",
+    disabled: false,
   },
   {
     value: "openai",
     label: "OpenAI",
+    disabled: true,
   },
   {
     value: "claude",
     label: "Claude",
+    disabled: true,
   },
   {
     value: "gemini",
     label: "Gemini",
+    disabled: true,
   },
 ]
 
-export function PlatformCombobox({ value, onValueChange, className }) {
+export function PlatformCombobox({ 
+  value, 
+  onValueChange, 
+  className, 
+  options = defaultPlatforms,
+  placeholder = "Select platform..."
+}) {
   const [open, setOpen] = React.useState(false)
 
   return (
@@ -43,32 +53,41 @@ export function PlatformCombobox({ value, onValueChange, className }) {
           className={cn("w-full justify-between", className)}
         >
           {value
-            ? platforms.find((platform) => platform.value === value)?.label
-            : "Select platform..."}
+            ? options.find((option) => option.value === value)?.label
+            : placeholder}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[--radix-popover-trigger-width] p-1 z-[10000] bg-white border shadow-lg" align="start" side="bottom" sideOffset={4}>
         <div className="space-y-1">
-          {platforms.map((platform) => (
+          {options.map((option) => (
             <button
-              key={platform.value}
+              key={option.value}
+              disabled={option.disabled}
               className={cn(
-                "w-full flex items-center justify-start px-2 py-1.5 text-sm rounded-sm hover:bg-accent hover:text-accent-foreground transition-colors",
-                value === platform.value && "bg-accent text-accent-foreground"
+                "w-full flex items-center justify-start px-2 py-1.5 text-sm rounded-sm transition-colors",
+                option.disabled 
+                  ? "opacity-50 cursor-not-allowed text-gray-400" 
+                  : "hover:bg-accent hover:text-accent-foreground",
+                value === option.value && !option.disabled && "bg-accent text-accent-foreground"
               )}
               onClick={() => {
-                onValueChange(platform.value)
-                setOpen(false)
+                if (!option.disabled) {
+                  onValueChange(option.value)
+                  setOpen(false)
+                }
               }}
             >
               <Check
                 className={cn(
                   "mr-2 h-4 w-4",
-                  value === platform.value ? "opacity-100" : "opacity-0"
+                  value === option.value ? "opacity-100" : "opacity-0"
                 )}
               />
-              {platform.label}
+              {option.label}
+              {option.disabled && (
+                <span className="ml-auto text-xs text-gray-400">(Coming Soon)</span>
+              )}
             </button>
           ))}
         </div>
