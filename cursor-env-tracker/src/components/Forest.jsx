@@ -136,7 +136,7 @@ const Forest = ({ tokens, onComplete }) => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-sky-200 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-b from-sky-200 dark:from-gray-900 relative overflow-hidden">
       {/* Forest Container with Isometric Perspective */}
       <div 
         className="relative w-full h-screen flex items-center justify-center"
@@ -181,7 +181,7 @@ const Forest = ({ tokens, onComplete }) => {
           </div>
 
           {/* All Forest Elements - Mixed layer with z-index sorting */}
-          <div className="absolute inset-0" style={{ zIndex: 2 }}>
+          <div className="absolute inset-0" style={{ zIndex: 3 }}>
             {/* Combine trees and flowers, then sort by z-index for proper layering */}
             {[...trees, ...flowers]
               .sort((a, b) => a.zIndex - b.zIndex)

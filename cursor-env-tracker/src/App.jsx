@@ -42,8 +42,10 @@ const App = () => {
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      {renderView()}
-      <Footer />
+      <main className={view === 'forest' ? '' : 'pb-20'}>
+        {renderView()}
+      </main>
+      <Footer currentView={view} />
     </div>
   )
 }

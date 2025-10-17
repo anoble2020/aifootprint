@@ -284,7 +284,7 @@ const Calculator = ({ onCalculate }) => {
               </div>
             </div>
 
-            <div className="mb-4 p-3 bg-gray-100 rounded-lg relative z-0">
+            <div className="mb-4 p-3 bg-gray-100 rounded-lg relative z-0 instructions-box">
               <h3 className="font-semibold mb-2 text-xs">{getInstructions(platform, activeTab).title}</h3>
               <ol className="space-y-1 text-xs text-gray-600">
                 {getInstructions(platform, activeTab).steps.map((step, index) => (
@@ -314,7 +314,7 @@ const Calculator = ({ onCalculate }) => {
                       placeholder="e.g., 1000000"
                       value={tokens}
                       onChange={(e) => setTokens(e.target.value)}
-                      className="h-10"
+                      className="h-10 input-field"
                       min="1"
                       step="1"
                     />
@@ -345,7 +345,7 @@ const Calculator = ({ onCalculate }) => {
                       type="file"
                       accept=".csv"
                       onChange={handleFileUpload}
-                      className="h-10 cursor-pointer"
+                      className="h-10 cursor-pointer input-field"
                       disabled={isProcessing}
                     />
                     <p className="text-xs text-gray-600">

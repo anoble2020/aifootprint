@@ -26,7 +26,7 @@ const charities = [
 
 const CallToAction = () => {
   return (
-    <section className="py-20 px-6 bg-gray-50">
+    <section className="py-20 px-6 bg-gray-50 cta-section">
       <div className="container mx-auto max-w-6xl">
         <div className="text-center mb-12">
           <div className="inline-flex h-20 w-20 items-center justify-center rounded-full bg-green-100 mb-6 shadow-sm">
@@ -40,7 +40,7 @@ const CallToAction = () => {
 
         <div className="grid gap-6 md:grid-cols-3 mb-12">
           {charities.map((charity, index) => (
-            <Card key={charity.name} className="border-none shadow-sm hover:shadow-md transition-all duration-300 flex flex-col bg-white">
+            <Card key={charity.name} className="border-none shadow-sm hover:shadow-md transition-all duration-300 flex flex-col bg-white cta-card">
               <CardHeader>
                 <CardTitle className="text-xl text-fern">{charity.name}</CardTitle>
                 <CardDescription className="text-sm text-gray-600">
@@ -53,7 +53,7 @@ const CallToAction = () => {
                 </p>
                 <Button 
                   asChild 
-                  className="w-full transition-all text-white bg-fern hover:bg-fern-dark"
+                  className="w-full transition-all text-white bg-fern hover:bg-fern-dark cta-button"
                 >
                   <a 
                     href={charity.url} 
@@ -70,7 +70,7 @@ const CallToAction = () => {
           ))}
         </div>
 
-        <Card className="border-none shadow-sm text-white bg-fern">
+        <Card className="border-none shadow-sm text-white bg-fern cta-every-action">
           <CardContent className="pt-8 pb-8 text-center">
             <h3 className="text-2xl font-bold mb-3">Every Action Counts</h3>
             <p className="text-white/90 max-w-2xl mx-auto mb-6">

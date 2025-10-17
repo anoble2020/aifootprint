@@ -4,6 +4,7 @@ import { OrbitControls, useGLTF, Environment, ContactShadows } from '@react-thre
 import { Button } from './ui/button'
 import { ArrowRight, TreePine } from 'lucide-react'
 import * as THREE from 'three'
+import ShootingStars from './ShootingStars'
 
 // Error boundary component
 class ErrorBoundary extends React.Component {
@@ -26,7 +27,7 @@ class ErrorBoundary extends React.Component {
   render() {
     if (this.state.hasError) {
       return (
-        <div className="w-full h-screen flex items-center justify-center bg-gradient-to-b from-sky-200">
+        <div className="w-full h-screen flex items-center justify-center bg-gradient-to-b from-sky-200 dark:from-gray-900">
           <div className="text-center p-8 bg-white/90 rounded-lg shadow-lg max-w-md">
             <h2 className="text-2xl font-bold text-gray-800 mb-4">Forest Loading Error</h2>
             <p className="text-gray-600 mb-4">
@@ -104,7 +105,7 @@ function ModelPreloader({ onLoadingComplete }) {
 // Loading fallback component
 function LoadingFallback() {
   return (
-    <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-b from-sky-200 z-50">
+    <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-b from-sky-200 dark:from-gray-900 z-50">
       <div className="flex items-end space-x-4">
         {/* Three bouncing trees */}
         <div className="flex flex-col items-center">
@@ -441,17 +442,40 @@ function Ground({ position, size }) {
 
 // Forest scene component (3D only, no UI elements)
 function ForestScene({ trees, flowers, mushrooms, logs, plants, groundTiles }) {
+  // Track dark mode state for reactive updates
+  const [isDarkMode, setIsDarkMode] = useState(() => 
+    document.documentElement.classList.contains('dark')
+  )
+
+  // Listen for dark mode changes
+  useEffect(() => {
+    const observer = new MutationObserver(() => {
+      const darkMode = document.documentElement.classList.contains('dark')
+      setIsDarkMode(darkMode)
+    })
+
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class']
+    })
+
+    return () => observer.disconnect()
+  }, [])
+  
   return (
     <>
-      {/* Enhanced Lighting System */}
+      {/* Dynamic Lighting System based on theme */}
       {/* Ambient light for overall brightness */}
-      <ambientLight intensity={0.3} color="#ffffff" />
+      <ambientLight 
+        intensity={isDarkMode ? 0.5 : 0.8} 
+        color={isDarkMode ? "#4a4a7a" : "#ffffff"} 
+      />
       
-      {/* Main directional light (sun) */}
+      {/* Main directional light */}
       <directionalLight 
-        position={[20, 25, 15]} 
-        intensity={2.0} 
-        color="#fff8dc"
+        position={[15, 30, 10]} 
+        intensity={isDarkMode ? 1.2 : 2.0} 
+        color={isDarkMode ? "#c8d5ff" : "#fff8dc"}
         castShadow
         shadow-mapSize-width={2048}
         shadow-mapSize-height={2048}
@@ -466,24 +490,24 @@ function ForestScene({ trees, flowers, mushrooms, logs, plants, groundTiles }) {
       
       {/* Secondary directional light for fill */}
       <directionalLight 
-        position={[-10, 15, -5]} 
-        intensity={0.4} 
-        color="#e6f3ff"
+        position={[-8, 20, -3]} 
+        intensity={isDarkMode ? 0.4 : 0.4} 
+        color={isDarkMode ? "#a9b5ff" : "#e6f3ff"}
       />
       
-      {/* Hemisphere light for natural sky/ground lighting */}
+      {/* Hemisphere light for sky/ground lighting */}
       <hemisphereLight 
-        skyColor="#87CEEB" 
-        groundColor="#90EE90" 
-        intensity={0.8} 
+        skyColor={isDarkMode ? "#1a1a3a" : "#87CEEB"} 
+        groundColor={isDarkMode ? "#2a2a4a" : "#90EE90"} 
+        intensity={isDarkMode ? 0.5 : 0.8} 
       />
       
-      {/* Point light for additional warmth */}
+      {/* Point light for warmth */}
       <pointLight 
         position={[0, 8, 0]} 
-        intensity={0.3} 
+        intensity={isDarkMode ? 0.2 : 0.3} 
         color="#fff8dc"
-        distance={50}
+        distance={isDarkMode ? 40 : 50}
         decay={2}
       />
 
@@ -732,9 +756,12 @@ const Forest3D = ({ tokens, onComplete, onError }) => {
   }, [treesNeeded, flowersNeeded, mushroomsNeeded, logsNeeded, plantsNeeded])
 
   return (
-    <div className="w-full h-screen relative">
+    <div className="w-full h-screen relative forest-background">
       {/* Show loader until models are loaded */}
       {isLoading && <LoadingFallback />}
+      
+      {/* Shooting stars for dark mode */}
+      <ShootingStars />
       
       {/* Instructions overlay */}
       {!isLoading && (
@@ -795,7 +822,8 @@ const Forest3D = ({ tokens, onComplete, onError }) => {
             fov: 50 
           }}
           shadows
-          className="bg-gradient-to-b from-sky-200"
+          className="bg-gradient-to-b from-sky-200 dark:from-gray-900"
+          style={{ zIndex: 1 }}
         >
           <Suspense fallback={null}>
             <ModelPreloader onLoadingComplete={handleAllModelsLoaded} />
