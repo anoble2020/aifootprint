@@ -1,37 +1,39 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
 @import "tailwindcss";
 
-@theme {
-  /* HSL design tokens mapped to Tailwind color names for v4 */
-  --color-background: 0 0% 94%;            /* off-white */
-  --color-foreground: 120 27% 18%;          /* brunswick green */
+@layer base {
+  :root {
+    --background: 0 0% 100%; /* pure white #FFFFFF */
+    --foreground: 120 27% 18%; /* brunswick green - deep forest */
 
-  --color-card: 0 0% 100%;
-  --color-card-foreground: 120 27% 18%;
+    --card: 0 0% 100%;
+    --card-foreground: 120 27% 18%;
 
-  --color-popover: 0 0% 100%;
-  --color-popover-foreground: 120 27% 18%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 120 27% 18%;
 
-  --color-primary: 119 24% 35%;             /* fern green */
-  --color-primary-foreground: 0 0% 100%;
+    --primary: 119 24% 35%; /* fern green - vibrant natural */
+    --primary-foreground: 0 0% 100%;
 
-  --color-secondary: 76 21% 57%;            /* sage */
-  --color-secondary-foreground: 120 27% 18%;
+    --secondary: 76 21% 57%; /* sage - calm earth tone */
+    --secondary-foreground: 120 27% 18%;
 
-  --color-muted: 31 24% 87%;
-  --color-muted-foreground: 120 24% 30%;
+    --muted: 31 24% 87%;
+    --muted-foreground: 120 24% 30%;
 
-  --color-accent: 119 24% 35%;
-  --color-accent-foreground: 0 0% 100%;
+    --accent: 119 24% 35%; /* fern green accent */
+    --accent-foreground: 0 0% 100%;
 
-  --color-destructive: 0 84.2% 60.2%;
-  --color-destructive-foreground: 0 0% 100%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 100%;
 
-  --color-border: 31 21% 80%;
-  --color-input: 0 0% 90%;
-  --color-ring: 119 24% 35%;
+    --border: 31 21% 80%;
+    --input: 0 0% 90%;
+    --ring: 119 24% 35%;
 
-  --radius: 0.75rem;
+    --radius: 0.75rem;
+  }
 }
 
 :root {
@@ -44,33 +46,33 @@
 }
 
 .dark {
-  --color-background: 120 27% 18%;
-  --color-foreground: 31 24% 87%;
+  --background: 120 27% 18%;
+  --foreground: 31 24% 87%;
 
-  --color-card: 120 24% 30%;
-  --color-card-foreground: 31 24% 87%;
+  --card: 120 24% 30%;
+  --card-foreground: 31 24% 87%;
 
-  --color-popover: 120 24% 30%;
-  --color-popover-foreground: 31 24% 87%;
+  --popover: 120 24% 30%;
+  --popover-foreground: 31 24% 87%;
 
-  --color-primary: 76 21% 57%;
-  --color-primary-foreground: 120 27% 18%;
+  --primary: 76 21% 57%;
+  --primary-foreground: 120 27% 18%;
 
-  --color-secondary: 120 24% 30%;
-  --color-secondary-foreground: 31 24% 87%;
+  --secondary: 120 24% 30%;
+  --secondary-foreground: 31 24% 87%;
 
-  --color-muted: 120 24% 30%;
-  --color-muted-foreground: 76 21% 65%;
+  --muted: 120 24% 30%;
+  --muted-foreground: 76 21% 65%;
 
-  --color-accent: 119 24% 35%;
-  --color-accent-foreground: 31 24% 87%;
+  --accent: 119 24% 35%;
+  --accent-foreground: 31 24% 87%;
 
-  --color-destructive: 0 62.8% 50%;
-  --color-destructive-foreground: 31 24% 87%;
+  --destructive: 0 62.8% 50%;
+  --destructive-foreground: 31 24% 87%;
 
-  --color-border: 120 24% 30%;
-  --color-input: 120 24% 30%;
-  --color-ring: 76 21% 57%;
+  --border: 120 24% 30%;
+  --input: 120 24% 30%;
+  --ring: 76 21% 57%;
 }
 
 @layer base {
@@ -79,29 +81,104 @@
   }
 
   * {
-    @apply border-border;
+    border-color: hsl(var(--border));
   }
 
   body {
-    @apply bg-background text-foreground;
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
   }
 }
 
 @layer components {
   .btn-primary {
-    @apply bg-primary hover:bg-primary/90 text-primary-foreground font-medium px-6 py-3 rounded-lg transition-colors duration-200;
+    background-color: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+    font-weight: 500;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    transition: all 0.2s;
+  }
+
+  .btn-primary:hover {
+    background-color: hsl(var(--primary) / 0.9);
   }
 
   .btn-secondary {
-    @apply bg-secondary hover:bg-secondary/90 text-secondary-foreground font-medium px-6 py-3 rounded-lg transition-colors duration-200;
+    background-color: hsl(var(--secondary));
+    color: hsl(var(--secondary-foreground));
+    font-weight: 500;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    transition: all 0.2s;
+  }
+
+  .btn-secondary:hover {
+    background-color: hsl(var(--secondary) / 0.9);
   }
 
   .card {
-    @apply bg-card text-card-foreground rounded-xl shadow-lg p-6;
+    background-color: hsl(var(--card));
+    color: hsl(var(--card-foreground));
+    border-radius: 0.75rem;
     box-shadow: var(--shadow-soft);
+    padding: 1.5rem;
   }
 
   .input-field {
-    @apply w-full px-4 py-3 rounded-lg bg-white border border-input text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    background-color: white;
+    border: 1px solid hsl(var(--input));
+    color: hsl(var(--foreground));
+  }
+
+  .input-field::placeholder {
+    color: hsl(var(--muted-foreground));
+  }
+
+  .input-field:focus {
+    outline: none;
+    ring: 2px solid hsl(var(--ring));
+    border-color: transparent;
+  }
+
+  .button {
+    background: hsl(119 24% 35%) !important;
+    color: white !important;
+    border: none !important;
+  }
+
+  .button:hover {
+    background: hsl(119 24% 30%) !important;
+  }
+
+  .text-fern {
+    color: hsl(119 24% 35%);
+  }
+
+  .bg-fern {
+    background-color: hsl(119 24% 35%);
+    color: white;
+  }
+
+  .bg-fern:hover {
+    background-color: hsl(119 24% 30%);
+  }
+
+  .fade-in-slow {
+    opacity: 0;
+    animation: fadeInSlow 1.5s ease-in-out forwards;
+  }
+
+  @keyframes fadeInSlow {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
   }
 }
+

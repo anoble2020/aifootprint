@@ -604,10 +604,7 @@ const Forest3D = ({ tokens, onComplete, onError }) => {
   // Show stats after models are loaded
   useEffect(() => {
     if (!isLoading) {
-      const timer = setTimeout(() => {
-        setShowStats(true)
-      }, 1000)
-      return () => clearTimeout(timer)
+      setShowStats(true)
     }
   }, [isLoading])
 
@@ -754,7 +751,7 @@ const Forest3D = ({ tokens, onComplete, onError }) => {
       {/* Stats overlay */}
       {!isLoading && showStats && (
         <div className="absolute top-8 left-8 right-8 z-10">
-          <div className="bg-white/90 backdrop-blur-sm rounded-lg p-6 shadow-lg max-w-md">
+          <div className="bg-white/90 backdrop-blur-sm rounded-lg p-6 shadow-lg max-w-md fade-in-slow">
             <div className="flex items-center gap-3 mb-4">
               <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-green-100">
                 <TreePine className="h-6 w-6 text-green-600" />
@@ -782,7 +779,7 @@ const Forest3D = ({ tokens, onComplete, onError }) => {
             
             <Button 
               onClick={onComplete}
-              className="w-full mt-6 bg-green-600 hover:bg-green-700"
+              className="w-full mt-6 bg-fern hover:bg-fern-dark"
             >
               Continue to Action
               <ArrowRight className="ml-2 h-4 w-4" />
@@ -794,7 +791,7 @@ const Forest3D = ({ tokens, onComplete, onError }) => {
       <ErrorBoundary onError={onError}>
         <Canvas
           camera={{ 
-            position: [35, 35, 35], 
+            position: [0.00, 5.00, 35.00], 
             fov: 50 
           }}
           shadows
@@ -817,10 +814,12 @@ const Forest3D = ({ tokens, onComplete, onError }) => {
             enablePan={true}
             enableZoom={true}
             enableRotate={true}
-            minDistance={10}
-            maxDistance={150}
+            minDistance={5}
+            maxDistance={80}
             minPolarAngle={Math.PI / 6}
-            maxPolarAngle={Math.PI / 2.2}
+            maxPolarAngle={Math.PI / 2}
+            target={[0, 0, 0]}
+            autoRotate={false}
           />
         </Canvas>
       </ErrorBoundary>

@@ -1,204 +1,365 @@
-import React, { useState } from 'react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card'
-import { Input } from './ui/input'
-import { Button } from './ui/button'
-import { Calculator as CalcIcon } from 'lucide-react'
-
-const PLATFORMS = {
-  cursor: {
-    label: 'Cursor',
-    steps: [
-      'Login to Cursor and navigate to "Dashboard"',
-      'Click on Usage',
-      'Select a date range above the "All Events" table, and then click on the "Export CSV" button',
-      'Paste the generated URL below',
-    ],
-  },
-  openai: {
-    label: 'OpenAI',
-    steps: [
-      'Login to OpenAI and go to Usage',
-      'Select a date range and export usage as CSV',
-      'Paste the generated URL below',
-    ],
-  },
-  claude: {
-    label: 'Claude',
-    steps: [
-      'Login to Anthropic Console and go to Usage',
-      'Export usage as CSV for a date range',
-      'Paste the generated URL below',
-    ],
-  },
-  gemini: {
-    label: 'Gemini',
-    steps: [
-      'Login to Google AI Studio or Billing Reports',
-      'Export usage as CSV for a date range',
-      'Paste the generated URL below',
-    ],
-  },
-}
-
-function parseCsvForTokens(csvText) {
-  // naive parser: sum a tokens column if present, otherwise try input_tokens+output_tokens
-  let total = 0
-  const lines = csvText.split(/\r?\n/)
-  if (lines.length === 0) return 0
-  const header = lines[0].split(',').map(h => h.trim().toLowerCase())
-  const tokensIdx = header.indexOf('tokens')
-  const inputIdx = header.indexOf('input_tokens')
-  const outputIdx = header.indexOf('output_tokens')
-  for (let i = 1; i < lines.length; i++) {
-    const row = lines[i]
-    if (!row) continue
-    const cols = row.split(',')
-    const tokens = tokensIdx >= 0 ? Number(cols[tokensIdx] || 0) : 0
-    const inputT = inputIdx >= 0 ? Number(cols[inputIdx] || 0) : 0
-    const outputT = outputIdx >= 0 ? Number(cols[outputIdx] || 0) : 0
-    total += tokensIdx >= 0 ? tokens : (inputT + outputT)
-  }
-  return isNaN(total) ? 0 : total
-}
+import { useState, useEffect } from "react";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
+import { Input } from "./ui/input";
+import { Button } from "./ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs.tsx";
+import { PlatformCombobox } from "./ui/combobox";
+import { Calculator as CalcIcon, Upload } from "lucide-react";
+import { useToast } from "../hooks/use-toast";
 
 const Calculator = ({ onCalculate }) => {
-  const [tokens, setTokens] = useState('')
-  const [platform, setPlatform] = useState('cursor')
-  const [csvUrl, setCsvUrl] = useState('')
-  const [csvError, setCsvError] = useState('')
+  const [platform, setPlatform] = useState("cursor");
+  const [tokens, setTokens] = useState("");
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [activeTab, setActiveTab] = useState("manual");
+  const { toast } = useToast();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-    setCsvError('')
+  // Update activeTab when component mounts to ensure instructions are correct
+  useEffect(() => {
+    setActiveTab("manual");
+  }, []);
 
-    // Prefer CSV if provided
-    if (csvUrl) {
-      try {
-        const res = await fetch(csvUrl)
-        if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`)
-        const text = await res.text()
-        const totalTokens = parseCsvForTokens(text)
-        if (totalTokens > 0) {
-          onCalculate(totalTokens)
-          return
+  const getInstructions = (platform, method) => {
+    const instructions = {
+      cursor: {
+        manual: {
+          title: "Manual Token Entry for Cursor",
+          steps: [
+            "Login to Cursor and navigate to 'Dashboard'",
+            "Click on 'Usage' to view your token usage",
+            "Look for 'Total Tokens' or 'Tokens Used' in the usage summary",
+            "Enter the total token count in the input field below"
+          ]
+        },
+        upload: {
+          title: "Upload CSV from Cursor",
+          steps: [
+            "Login to Cursor and navigate to 'Dashboard'",
+            "Click on 'Usage'",
+            "Select a date range above the 'All Events' table",
+            "Click on the 'Export CSV' button",
+            "Download the CSV file and upload it below"
+          ]
         }
-        setCsvError('Could not detect token columns in CSV. Please check the file format.')
-      } catch (err) {
-        if (err.name === 'TypeError' && err.message.includes('CORS')) {
-          setCsvError('CORS error: Please download the CSV file and upload it instead, or copy the token count manually.')
+      },
+      openai: {
+        manual: {
+          title: "Manual Token Entry for OpenAI",
+          steps: [
+            "Login to OpenAI Platform",
+            "Navigate to 'Usage' section",
+            "View your token usage summary",
+            "Enter the total token count in the input field below"
+          ]
+        },
+        url: {
+          title: "Export CSV URL from OpenAI",
+          steps: [
+            "Login to OpenAI Platform",
+            "Navigate to 'Usage' section",
+            "Click 'Export' to generate a CSV URL",
+            "Copy the URL and paste it below"
+          ]
+        },
+        upload: {
+          title: "Upload CSV from OpenAI",
+          steps: [
+            "Login to OpenAI Platform",
+            "Navigate to 'Usage' section",
+            "Click 'Export' to download CSV file",
+            "Upload the downloaded CSV file below"
+          ]
+        }
+      },
+      claude: {
+        manual: {
+          title: "Manual Token Entry for Claude",
+          steps: [
+            "Login to Claude (Anthropic Console)",
+            "Navigate to 'Usage' or 'Billing' section",
+            "View your token usage summary",
+            "Enter the total token count in the input field below"
+          ]
+        },
+        url: {
+          title: "Export CSV URL from Claude",
+          steps: [
+            "Login to Claude (Anthropic Console)",
+            "Navigate to 'Usage' or 'Billing' section",
+            "Export your usage data as CSV",
+            "Copy the generated URL and paste it below"
+          ]
+        },
+        upload: {
+          title: "Upload CSV from Claude",
+          steps: [
+            "Login to Claude (Anthropic Console)",
+            "Navigate to 'Usage' or 'Billing' section",
+            "Export your usage data as CSV",
+            "Download and upload the CSV file below"
+          ]
+        }
+      },
+      gemini: {
+        manual: {
+          title: "Manual Token Entry for Gemini",
+          steps: [
+            "Login to Google AI Studio",
+            "Navigate to 'Usage' or 'Billing' dashboard",
+            "View your token usage summary",
+            "Enter the total token count in the input field below"
+          ]
+        },
+        url: {
+          title: "Export CSV URL from Gemini",
+          steps: [
+            "Login to Google AI Studio",
+            "Navigate to 'Usage' or 'Billing' dashboard",
+            "Export your usage data as CSV",
+            "Copy the generated URL and paste it below"
+          ]
+        },
+        upload: {
+          title: "Upload CSV from Gemini",
+          steps: [
+            "Login to Google AI Studio",
+            "Navigate to 'Usage' or 'Billing' dashboard",
+            "Export your usage data as CSV",
+            "Download and upload the CSV file below"
+          ]
+        }
+      }
+    };
+    
+    return instructions[platform]?.[method] || instructions.cursor.manual;
+  };
+
+  const parseCSV = (csvText) => {
+    const lines = csvText.trim().split('\n');
+    if (lines.length < 2) {
+      throw new Error("CSV file is empty or invalid");
+    }
+
+    // Better CSV parsing that handles quoted values with commas
+    const parseCSVLine = (line) => {
+      const result = [];
+      let current = '';
+      let inQuotes = false;
+      
+      for (let i = 0; i < line.length; i++) {
+        const char = line[i];
+        if (char === '"') {
+          inQuotes = !inQuotes;
+        } else if (char === ',' && !inQuotes) {
+          result.push(current.trim());
+          current = '';
         } else {
-          setCsvError(`Unable to fetch CSV: ${err.message}. Try downloading and uploading the file instead.`)
+          current += char;
         }
       }
+      result.push(current.trim());
+      return result;
+    };
+
+    const headers = parseCSVLine(lines[0]);
+    console.log("CSV Headers:", headers);
+    console.log("Number of columns:", headers.length);
+    
+    // Look for "total tokens" column (case insensitive) - this should be column I
+    let totalTokensIndex = headers.findIndex(h => 
+      h.toLowerCase().includes("total tokens") || 
+      h.toLowerCase().includes("total_tokens")
+    );
+    
+    console.log("Found tokens column at index:", totalTokensIndex);
+    
+    // If not found, try column I (index 8) as fallback
+    if (totalTokensIndex === -1 && headers.length > 8) {
+      totalTokensIndex = 8;
+      console.log("Using fallback column I (index 8)");
+    }
+    
+    if (totalTokensIndex === -1) {
+      throw new Error("Could not find 'Total Tokens' column in CSV. Expected column I (index 8).");
     }
 
-    const tokenNum = parseFloat(tokens)
-    if (!isNaN(tokenNum) && tokenNum > 0) {
-      onCalculate(tokenNum)
-    }
-  }
-
-  const onFileUpload = async (e) => {
-    setCsvError('')
-    const file = e.target.files?.[0]
-    if (!file) return
-    try {
-      const text = await file.text()
-      const totalTokens = parseCsvForTokens(text)
-      if (totalTokens > 0) {
-        onCalculate(totalTokens)
+    let totalTokens = 0;
+    let processedRows = 0;
+    let skippedRows = 0;
+    
+    for (let i = 1; i < lines.length; i++) {
+      const values = parseCSVLine(lines[i]);
+      const tokenValue = parseFloat(values[totalTokensIndex]?.replace(/"/g, '') || '0');
+      if (!isNaN(tokenValue)) {
+        totalTokens += tokenValue;
+        processedRows++;
       } else {
-        setCsvError('Could not detect token columns in CSV. Please check the file.')
+        skippedRows++;
+        console.log(`Skipped row ${i}: invalid token value "${values[totalTokensIndex]}"`);
       }
-    } catch (_) {
-      setCsvError('Failed to read the uploaded CSV file.')
     }
-  }
+    
+    console.log(`Processed ${processedRows} rows, skipped ${skippedRows} rows, total tokens: ${totalTokens.toLocaleString()}`);
+    console.log("Sample values from column:", lines.slice(1, 4).map(line => {
+      const values = parseCSVLine(line);
+      return values[totalTokensIndex]?.replace(/"/g, '');
+    }));
 
-  const steps = PLATFORMS[platform].steps
+    return totalTokens;
+  };
+
+  const handleManualSubmit = (e) => {
+    e.preventDefault();
+    const tokenNum = parseFloat(tokens);
+    if (!isNaN(tokenNum) && tokenNum > 0) {
+      onCalculate(tokenNum);
+      toast({
+        title: "Calculation Successful",
+        description: `Calculated ${tokenNum.toLocaleString()} tokens.`,
+      });
+    } else {
+      toast({
+        title: "Invalid Input",
+        description: "Please enter a valid number of tokens.",
+        variant: "destructive",
+      });
+    }
+  };
+
+
+  const handleFileUpload = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setIsProcessing(true);
+    const reader = new FileReader();
+    
+    reader.onload = (event) => {
+      try {
+        const csvText = event.target?.result;
+        const totalTokens = parseCSV(csvText);
+        
+        toast({
+          title: "CSV processed successfully",
+          description: `Found ${totalTokens.toLocaleString()} total tokens`,
+        });
+        
+        onCalculate(totalTokens);
+      } catch (error) {
+        toast({
+          title: "Error processing CSV",
+          description: error instanceof Error ? error.message : "Could not process CSV file",
+          variant: "destructive",
+        });
+      } finally {
+        setIsProcessing(false);
+      }
+    };
+    
+    reader.readAsText(file);
+  };
 
   return (
-    <section className="py-20 px-6">
+    <section className="py-4 px-6">
       <div className="container mx-auto max-w-2xl">
-        <Card className="border-none" style={{ boxShadow: 'var(--shadow-elevated)' }}>
-          <CardHeader className="text-center">
-            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
-              <CalcIcon className="h-8 w-8 text-primary" />
+        <Card className="border-none shadow-xl">
+          <CardHeader className="text-center pb-4">
+            <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
+              <CalcIcon className="h-6 w-6 text-fern" />
             </div>
-            <CardTitle className="text-3xl font-bold">Calculate Your Impact</CardTitle>
-            <CardDescription className="text-base">
-              Enter tokens or import a usage CSV to estimate emissions
+            <CardTitle className="text-2xl font-bold">Calculate Your Impact</CardTitle>
+            <CardDescription className="text-sm mt-1">
+              Choose your AI platform and import your usage data
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="space-y-2">
-                <label className="text-sm font-medium">Platform</label>
-                <select
-                  value={platform}
-                  onChange={(e) => setPlatform(e.target.value)}
-                  className="h-12 rounded-md border border-input bg-white px-3 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
-                >
-                  {Object.entries(PLATFORMS).map(([key, v]) => (
-                    <option key={key} value={key}>{v.label}</option>
-                  ))}
-                </select>
-                <ul className="list-disc list-inside text-sm text-muted-foreground space-y-1 mt-2">
-                  {steps.map((s, i) => (
-                    <li key={i}>{s}</li>
-                  ))}
-                </ul>
-              </div>
-
-              <div className="space-y-2">
-                <label htmlFor="tokens" className="text-sm font-medium">Token Count</label>
-                <Input
-                  id="tokens"
-                  type="number"
-                  placeholder="e.g., 1000000"
-                  value={tokens}
-                  onChange={(e) => setTokens(e.target.value)}
-                  className="h-12 text-lg"
-                  min="1"
-                  step="1"
+            <div className="mb-4 relative z-10">
+              <label className="text-sm font-medium mb-2 block">AI Platform</label>
+              <div className="relative">
+                <PlatformCombobox 
+                  value={platform} 
+                  onValueChange={setPlatform}
+                  className="h-10 justify-start flex max-w-[100px] border-1 border-black"
                 />
-                <p className="text-xs text-muted-foreground">Or paste/upload a CSV to auto-calculate</p>
               </div>
+            </div>
 
-              <div className="space-y-2">
-                <label htmlFor="csvurl" className="text-sm font-medium">CSV Export URL (or upload file)</label>
-                <Input
-                  id="csvurl"
-                  type="url"
-                  placeholder="https://...export-usage-events-csv?..."
-                  value={csvUrl}
-                  onChange={(e) => setCsvUrl(e.target.value)}
-                />
-                <div className="text-xs text-muted-foreground mb-2">
-                  Note: If URL doesn't work due to CORS, download the CSV and upload it below
+            <div className="mb-4 p-3 bg-gray-100 rounded-lg relative z-0">
+              <h3 className="font-semibold mb-2 text-xs">{getInstructions(platform, activeTab).title}</h3>
+              <ol className="space-y-1 text-xs text-gray-600">
+                {getInstructions(platform, activeTab).steps.map((step, index) => (
+                  <li key={index} className="flex gap-2">
+                    <span className="font-medium">{index + 1}.</span>
+                    <span>{step}</span>
+                  </li>
+                ))}
+              </ol>
+            </div>
+
+            <Tabs defaultValue="manual" className="w-full" onValueChange={setActiveTab}>
+              <TabsList className="grid w-full grid-cols-2">
+                <TabsTrigger value="manual">Manual</TabsTrigger>
+                <TabsTrigger value="upload">Upload CSV</TabsTrigger>
+              </TabsList>
+
+              <TabsContent value="manual" className="mt-4">
+                <form onSubmit={handleManualSubmit} className="space-y-4">
+                  <div className="space-y-2">
+                    <label htmlFor="tokens" className="text-sm font-medium">
+                      Token Count
+                    </label>
+                    <Input
+                      id="tokens"
+                      type="number"
+                      placeholder="e.g., 1000000"
+                      value={tokens}
+                      onChange={(e) => setTokens(e.target.value)}
+                      className="h-10"
+                      min="1"
+                      step="1"
+                    />
+                    <p className="text-xs text-gray-600">
+                      Enter the total number of tokens manually
+                    </p>
+                  </div>
+                  <Button 
+                    type="submit" 
+                    className="w-full h-10 text-sm font-semibold transition-all hover:scale-[1.02] button"
+                    size="sm"
+                  >
+                    Calculate Environmental Impact
+                  </Button>
+                </form>
+              </TabsContent>
+
+
+              <TabsContent value="upload" className="mt-4">
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <label htmlFor="csvFile" className="text-sm font-medium flex items-center gap-2">
+                      <Upload className="h-4 w-4" />
+                      Upload CSV File
+                    </label>
+                    <Input
+                      id="csvFile"
+                      type="file"
+                      accept=".csv"
+                      onChange={handleFileUpload}
+                      className="h-10 cursor-pointer"
+                      disabled={isProcessing}
+                    />
+                    <p className="text-xs text-gray-600">
+                      Upload your exported CSV file to calculate tokens
+                    </p>
+                  </div>
                 </div>
-                <input 
-                  type="file" 
-                  accept=".csv" 
-                  onChange={onFileUpload} 
-                  className="text-sm block w-full text-sm text-muted-foreground file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-primary file:text-primary-foreground hover:file:bg-primary/90" 
-                />
-                {csvError && <p className="text-xs text-destructive mt-1">{csvError}</p>}
-              </div>
-
-              <Button 
-                type="submit" 
-                className="w-full h-12 text-base font-semibold transition-all hover:scale-[1.02] calculate-button"
-                size="lg"
-              >
-                Calculate Environmental Impact
-              </Button>
-            </form>
+              </TabsContent>
+            </Tabs>
           </CardContent>
         </Card>
       </div>
     </section>
-  )
-}
+  );
+};
 
-export default Calculator
+export default Calculator;
