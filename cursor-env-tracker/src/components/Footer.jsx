@@ -49,8 +49,8 @@ const Footer = ({ currentView }) => {
                   </p>
                   
                   <div className="flex justify-between items-center w-full">
+                    <p className="text-xs text-muted-foreground italic inline-flex">
                     <Leaf className="h-3 w-3 text-muted-foreground mr-1" />
-                    <p className="text-xs text-muted-foreground italic">
                       Built with awareness for a sustainable future
                     </p>
                     <a 
@@ -104,7 +104,8 @@ const Footer = ({ currentView }) => {
           </p>
           
           <div className="flex justify-between items-center w-full">
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs text-muted-foreground inline-flex italic">
+            <Leaf className="h-3 w-3 text-muted-foreground mr-1" />
               Built with awareness for a sustainable future
             </p>
             

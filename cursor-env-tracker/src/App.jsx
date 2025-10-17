@@ -40,7 +40,7 @@ const App = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="h-screen bg-background overflow-hidden">
       <Header />
       <main className={view === 'forest' ? '' : 'pb-20'}>
         {renderView()}

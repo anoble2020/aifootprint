@@ -260,8 +260,8 @@ const Calculator = ({ onCalculate }) => {
   };
 
   return (
-    <section className="py-4 px-6">
-      <div className="container mx-auto max-w-2xl">
+    <section className="h-screen flex justify-center p-4" style={{ alignItems: 'safe center' }}>
+      <div className="w-full max-w-2xl overflow-y-auto max-h-full">
         <Card className="border-none shadow-xl">
           <CardHeader className="text-center pb-4">
             <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
