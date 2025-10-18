@@ -261,8 +261,8 @@ const Calculator = ({ onCalculate }) => {
 
   return (
     <section className="h-screen flex justify-center p-4" style={{ alignItems: 'safe center' }}>
-      <div className="w-full max-w-2xl overflow-y-auto max-h-full">
-        <Card className="border-none shadow-xl">
+      <div className="w-full max-w-2xl overflow-y-auto max-h-full p-4">
+        <Card className="border shadow-lg">
           <CardHeader className="text-center pb-4">
             <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
               <CalcIcon className="h-6 w-6 text-fern" />
@@ -279,7 +279,7 @@ const Calculator = ({ onCalculate }) => {
                 <PlatformCombobox 
                   value={platform} 
                   onValueChange={setPlatform}
-                  className="h-10 justify-start flex max-w-[100px] border-1 border-black"
+                  className="h-10 justify-start flex max-w-[100px] border-1 border-slate-300"
                 />
               </div>
             </div>

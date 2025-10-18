@@ -58,7 +58,7 @@ export function PlatformCombobox({
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[--radix-popover-trigger-width] p-1 z-[10000] bg-white border shadow-lg" align="start" side="bottom" sideOffset={4}>
+      <PopoverContent className="w-[--radix-popover-trigger-width] p-1 z-[10000] bg-white shadow-lg" align="start" side="bottom" sideOffset={4}>
         <div className="space-y-1">
           {options.map((option) => (
             <button
