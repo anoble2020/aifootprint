@@ -232,6 +232,11 @@
     border: none !important;
   }
 
+  /* Forest page background - ensure light mode uses sky-200 */
+  .bg-gradient-to-b.from-sky-200 {
+    background: linear-gradient(to bottom,#bae6fd, #ffffff) !important;
+  }
+
   /* Forest page background override - dark gradient */
   .dark .bg-gradient-to-b.from-sky-200 {
     background: linear-gradient(to bottom, 
@@ -503,6 +508,57 @@
 
   .card-shadow {
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
+  }
+
+  /* Glassmorphism effects */
+  .glassmorphism {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  }
+
+  .glassmorphism-strong {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+  }
+
+
+  /* Glassmorphism input styling - only for calculator page with video background */
+  .glassmorphism-input {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    color: #1f2937;
+  }
+
+  .glassmorphism-input::placeholder {
+    color: rgba(0, 0, 0, 0.6);
+  }
+
+  .glassmorphism-input:focus {
+    background: rgba(255, 255, 255, 0.9);
+    border-color: rgba(0, 0, 0, 0.3);
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Dark mode glassmorphism input styling - only for calculator page */
+  .dark .glassmorphism-input {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+  }
+
+  .dark .glassmorphism-input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  .dark .glassmorphism-input:focus {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2);
   }
 }
 

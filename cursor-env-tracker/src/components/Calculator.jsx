@@ -260,33 +260,33 @@ const Calculator = ({ onCalculate }) => {
   };
 
   return (
-    <section className="h-screen flex justify-center p-4" style={{ alignItems: 'safe center' }}>
-      <div className="w-full max-w-2xl overflow-y-auto max-h-full p-4">
-        <Card className="border shadow-lg">
+    <section className="flex-1 flex justify-center items-center p-4 relative">
+      <div className="w-full max-w-2xl overflow-y-auto max-h-full p-4 relative z-10">
+        <Card className="border border-white/20 bg-white/10 backdrop-blur-md shadow-2xl">
           <CardHeader className="text-center pb-4">
             <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
               <CalcIcon className="h-6 w-6 text-fern" />
             </div>
-            <CardTitle className="text-2xl font-bold">Calculate Your Impact</CardTitle>
-            <CardDescription className="text-sm mt-1">
+            <CardTitle className="text-2xl font-bold text-white drop-shadow-lg">Calculate Your Impact</CardTitle>
+            <CardDescription className="text-sm mt-1 text-white/90 drop-shadow-md">
               Choose your AI platform and import your usage data
             </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="mb-4 relative z-10">
-              <label className="text-sm font-medium mb-2 block">AI Platform</label>
+              <label className="text-sm font-medium mb-2 block text-white drop-shadow-md">AI Platform</label>
               <div className="relative">
                 <PlatformCombobox 
                   value={platform} 
                   onValueChange={setPlatform}
-                  className="h-10 justify-start flex max-w-[100px] border-1 border-slate-300"
+                  className="h-10 justify-start flex max-w-[100px] glassmorphism-input"
                 />
               </div>
             </div>
 
-            <div className="mb-4 p-3 bg-gray-100 rounded-lg relative z-0 instructions-box">
-              <h3 className="font-semibold mb-2 text-xs">{getInstructions(platform, activeTab).title}</h3>
-              <ol className="space-y-1 text-xs text-gray-600">
+            <div className="mb-4 p-3 bg-white/20 backdrop-blur-sm rounded-lg relative z-0 border border-white/30">
+              <h3 className="font-semibold mb-2 text-xs text-white drop-shadow-md">{getInstructions(platform, activeTab).title}</h3>
+              <ol className="space-y-1 text-xs text-white/90 drop-shadow-sm">
                 {getInstructions(platform, activeTab).steps.map((step, index) => (
                   <li key={index} className="flex gap-2">
                     <span className="font-medium">{index + 1}.</span>
@@ -305,7 +305,7 @@ const Calculator = ({ onCalculate }) => {
               <TabsContent value="manual" className="mt-4">
                 <form onSubmit={handleManualSubmit} className="space-y-4">
                   <div className="space-y-2">
-                    <label htmlFor="tokens" className="text-sm font-medium">
+                    <label htmlFor="tokens" className="text-sm font-medium text-white drop-shadow-md">
                       Token Count
                     </label>
                     <Input
@@ -314,11 +314,11 @@ const Calculator = ({ onCalculate }) => {
                       placeholder="e.g., 1000000"
                       value={tokens}
                       onChange={(e) => setTokens(e.target.value)}
-                      className="h-10 input-field"
+                      className="h-10 glassmorphism-input"
                       min="1"
                       step="1"
                     />
-                    <p className="text-xs text-gray-600">
+                    <p className="text-xs text-white/80 drop-shadow-sm">
                       Enter the total number of tokens manually
                     </p>
                   </div>
@@ -336,7 +336,7 @@ const Calculator = ({ onCalculate }) => {
               <TabsContent value="upload" className="mt-4">
                 <div className="space-y-4">
                   <div className="space-y-2">
-                    <label htmlFor="csvFile" className="text-sm font-medium flex items-center gap-2">
+                    <label htmlFor="csvFile" className="text-sm font-medium flex items-center gap-2 text-white drop-shadow-md">
                       <Upload className="h-4 w-4" />
                       Upload CSV File
                     </label>
@@ -345,10 +345,10 @@ const Calculator = ({ onCalculate }) => {
                       type="file"
                       accept=".csv"
                       onChange={handleFileUpload}
-                      className="h-10 cursor-pointer input-field"
+                      className="h-10 cursor-pointer glassmorphism-input"
                       disabled={isProcessing}
                     />
-                    <p className="text-xs text-gray-600">
+                    <p className="text-xs text-white/80 drop-shadow-sm">
                       Upload your exported CSV file to calculate tokens
                     </p>
                   </div>

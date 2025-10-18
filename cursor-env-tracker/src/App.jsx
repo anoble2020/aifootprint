@@ -40,9 +40,28 @@ const App = () => {
   }
 
   return (
-    <div className="h-screen bg-background overflow-hidden">
-      <Header />
-      <main className={view === 'forest' ? '' : 'pb-20'}>
+    <div className="min-h-screen bg-background flex flex-col relative">
+      {/* Video Background for Calculator View */}
+      {view === 'calculator' && (
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="fixed inset-0 w-full h-full object-cover z-0"
+          style={{ minHeight: '100vh', minWidth: '100vw' }}
+        >
+          <source src="/1448735-uhd_4096_2160_24fps.mp4" type="video/mp4" />
+        </video>
+      )}
+      
+      {/* Overlay for better text readability on calculator view */}
+      {view === 'calculator' && (
+        <div className="fixed inset-0 bg-black/20 z-10"></div>
+      )}
+      
+      <Header currentView={view} />
+      <main className={`flex-1 ${view === 'forest' ? '' : 'pb-20'} relative z-20`}>
         {renderView()}
       </main>
       <Footer currentView={view} />
