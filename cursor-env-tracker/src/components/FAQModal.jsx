@@ -3,11 +3,15 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Button } from './ui/button';
 import { HelpCircle } from 'lucide-react';
 
-const FAQModal = () => {
+const FAQModal = ({ currentView = 'calculator' }) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="ghost" size="icon" className="h-8 w-8">
+        <Button variant="ghost" size="icon" className={`h-8 w-8 ${
+          currentView === 'calculator' 
+            ? 'text-foreground hover:text-foreground dark:text-white dark:hover:text-white' 
+            : 'text-foreground hover:text-foreground'
+        }`}>
           <HelpCircle className="h-4 w-4" />
           <span className="sr-only">FAQ</span>
         </Button>

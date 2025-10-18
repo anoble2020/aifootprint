@@ -5,7 +5,7 @@ import logo from '../assets/circuitleaf.jpg'
 import FAQModal from './FAQModal'
 import SharePopover from './SharePopover'
 
-const Header = () => {
+const Header = ({ currentView = 'calculator' }) => {
   const [isDarkMode, setIsDarkMode] = useState(false)
 
   useEffect(() => {
@@ -43,7 +43,11 @@ const Header = () => {
                 alt="AI Footprint Logo" 
                 className="h-10 w-10 object-contain"
               />
-              <h1 className="text-xl font-bold text-foreground">
+              <h1 className={`text-xl font-bold ${
+                currentView === 'calculator' 
+                  ? 'text-foreground dark:text-white' 
+                  : 'text-foreground'
+              }`}>
                 ai.footprint
               </h1>
             </div>
@@ -53,21 +57,29 @@ const Header = () => {
             <Button
               variant="ghost"
               size="icon"
-              className="h-8 w-8"
+              className={`h-8 w-8 ${
+                currentView === 'calculator' 
+                  ? 'text-foreground hover:text-foreground dark:text-white dark:hover:text-white' 
+                  : 'text-foreground hover:text-foreground'
+              }`}
               onClick={() => window.open('https://github.com/anoble2020/aifootprint', '_blank')}
             >
               <Github className="h-4 w-4" />
               <span className="sr-only">GitHub Repository</span>
             </Button>
             
-            <FAQModal />
+            <FAQModal currentView={currentView} />
             
-            <SharePopover />
+            <SharePopover currentView={currentView} />
             
             <Button
               variant="ghost"
               size="icon"
-              className="h-8 w-8"
+              className={`h-8 w-8 ${
+                currentView === 'calculator' 
+                  ? 'text-foreground hover:text-foreground dark:text-white dark:hover:text-white' 
+                  : 'text-foreground hover:text-foreground'
+              }`}
               onClick={toggleDarkMode}
             >
               {isDarkMode ? (

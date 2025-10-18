@@ -4,7 +4,7 @@ import { Button } from './ui/button';
 import { Share2, Copy, Mail, MessageSquare, Linkedin } from 'lucide-react';
 import { useToast } from '../hooks/use-toast';
 
-const SharePopover = () => {
+const SharePopover = ({ currentView = 'calculator' }) => {
   const [open, setOpen] = useState(false);
   const { toast } = useToast();
   const currentUrl = window.location.href;
@@ -50,7 +50,11 @@ const SharePopover = () => {
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button variant="ghost" size="icon" className="h-8 w-8">
+        <Button variant="ghost" size="icon" className={`h-8 w-8 ${
+          currentView === 'calculator' 
+            ? 'text-foreground hover:text-foreground dark:text-white dark:hover:text-white' 
+            : 'text-foreground hover:text-foreground'
+        }`}>
           <Share2 className="h-4 w-4" />
           <span className="sr-only">Share</span>
         </Button>
