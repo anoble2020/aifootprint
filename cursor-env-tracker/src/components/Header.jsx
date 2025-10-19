@@ -45,7 +45,7 @@ const Header = ({ currentView = 'calculator' }) => {
               />
               <h1 className={`text-xl font-bold ${
                 currentView === 'calculator' 
-                  ? 'text-foreground dark:text-white' 
+                  ? 'text-white dark:text-white' 
                   : 'text-foreground'
               }`}>
                 ai.footprint
@@ -59,7 +59,7 @@ const Header = ({ currentView = 'calculator' }) => {
               size="icon"
               className={`h-8 w-8 ${
                 currentView === 'calculator' 
-                  ? 'text-foreground hover:text-foreground dark:text-white dark:hover:text-white' 
+                  ? 'text-white hover:text-white dark:text-white dark:hover:text-white' 
                   : 'text-foreground hover:text-foreground'
               }`}
               onClick={() => window.open('https://github.com/anoble2020/aifootprint', '_blank')}
@@ -77,7 +77,7 @@ const Header = ({ currentView = 'calculator' }) => {
               size="icon"
               className={`h-8 w-8 ${
                 currentView === 'calculator' 
-                  ? 'text-foreground hover:text-foreground dark:text-white dark:hover:text-white' 
+                  ? 'text-white hover:text-white dark:text-white dark:hover:text-white' 
                   : 'text-foreground hover:text-foreground'
               }`}
               onClick={toggleDarkMode}

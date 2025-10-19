@@ -52,7 +52,7 @@ const SharePopover = ({ currentView = 'calculator' }) => {
       <PopoverTrigger asChild>
         <Button variant="ghost" size="icon" className={`h-8 w-8 ${
           currentView === 'calculator' 
-            ? 'text-foreground hover:text-foreground dark:text-white dark:hover:text-white' 
+            ? 'text-white hover:text-white dark:text-white dark:hover:text-white' 
             : 'text-foreground hover:text-foreground'
         }`}>
           <Share2 className="h-4 w-4" />

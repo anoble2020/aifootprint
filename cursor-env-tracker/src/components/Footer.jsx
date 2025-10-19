@@ -75,12 +75,12 @@ const Footer = ({ currentView = 'calculator' }) => {
 
   // Other pages - collapsible footer
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50">
+    <div className={`fixed bottom-0 left-0 right-0 z-50 ${isExpanded ? 'backdrop-blur-sm' : ''}`}>
       {/* Footer content - animated */}
-      <div className={`transition-all duration-500 ease-in-out transform ${
-        isExpanded ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'
+      <div className={`transition-all duration-500 ease-in-out overflow-hidden ${
+        isExpanded ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
       }`}>
-        <footer className="border-t bg-card/90 backdrop-blur-sm px-6 py-4 border-border">
+        <footer className="border-t bg-card/90 px-6 py-4 border-border">
           <div className="w-full px-6">
             <div className="flex flex-col items-start gap-2 text-center">
               
@@ -133,7 +133,7 @@ const Footer = ({ currentView = 'calculator' }) => {
       <div className="flex justify-center">
         <button
           onClick={toggleExpanded}
-          className="border-t border-l border-r border-border rounded-t-lg px-4 py-1 transition-colors hover:bg-accent/10 bg-card/90 backdrop-blur-sm"
+          className="border-t border-l border-r border-border rounded-t-lg px-4 py-1 transition-colors hover:bg-accent/10 bg-card/90"
         >
           <ChevronUp className={`h-4 w-4 transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`} />
         </button>
