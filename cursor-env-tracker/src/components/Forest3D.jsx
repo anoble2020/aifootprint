@@ -68,26 +68,26 @@ function ModelPreloader({ onLoadingComplete }) {
   
   // Preload all models
   treeVariants.forEach(variant => {
-    useGLTF.preload(`/src/assets/kenney_nature-kit/Models/GLTF format/tree_oak${variant}.glb`)
+    useGLTF.preload(`/models/tree_oak${variant}.glb`)
   })
   
   flowerTypes.forEach(type => {
-    useGLTF.preload(`/src/assets/kenney_nature-kit/Models/GLTF format/${type}.glb`)
+    useGLTF.preload(`/models/${type}.glb`)
   })
   
   mushroomTypes.forEach(type => {
-    useGLTF.preload(`/src/assets/kenney_nature-kit/Models/GLTF format/${type}.glb`)
+    useGLTF.preload(`/models/${type}.glb`)
   })
   
   logTypes.forEach(type => {
-    useGLTF.preload(`/src/assets/kenney_nature-kit/Models/GLTF format/${type}.glb`)
+    useGLTF.preload(`/models/${type}.glb`)
   })
   
   plantTypes.forEach(type => {
-    useGLTF.preload(`/src/assets/kenney_nature-kit/Models/GLTF format/${type}.glb`)
+    useGLTF.preload(`/models/${type}.glb`)
   })
   
-  useGLTF.preload('/src/assets/kenney_nature-kit/Models/GLTF format/ground_grass.glb')
+  useGLTF.preload('/models/ground_grass.glb')
   
   // Signal that preloading is complete
   useEffect(() => {
@@ -125,7 +125,7 @@ function LoadingFallback() {
 // Tree component that loads GLTF models with fallback
 function Tree({ position, scale, variant, rotation }) {
   const meshRef = useRef()
-  const gltf = useSafeGLTF(`/src/assets/kenney_nature-kit/Models/GLTF format/tree_oak${variant}.glb`)
+  const gltf = useSafeGLTF(`/models/tree_oak${variant}.glb`)
   
   // Add some subtle animation
   useFrame((state) => {
@@ -178,7 +178,7 @@ function Tree({ position, scale, variant, rotation }) {
 // Flower component that loads GLTF models with fallback
 function Flower({ position, scale, type }) {
   const meshRef = useRef()
-  const gltf = useSafeGLTF(`/src/assets/kenney_nature-kit/Models/GLTF format/${type}.glb`)
+  const gltf = useSafeGLTF(`/models/${type}.glb`)
   
   useFrame((state) => {
     if (meshRef.current) {
@@ -222,7 +222,7 @@ function Flower({ position, scale, type }) {
 // Mushroom component that loads GLTF models with fallback
 function Mushroom({ position, scale, type }) {
   const meshRef = useRef()
-  const gltf = useSafeGLTF(`/src/assets/kenney_nature-kit/Models/GLTF format/${type}.glb`)
+  const gltf = useSafeGLTF(`/models/${type}.glb`)
   
   useFrame((state) => {
     if (meshRef.current) {
@@ -266,7 +266,7 @@ function Mushroom({ position, scale, type }) {
 // Log component that loads GLTF models with fallback
 function Log({ position, scale, type }) {
   const meshRef = useRef()
-  const gltf = useSafeGLTF(`/src/assets/kenney_nature-kit/Models/GLTF format/${type}.glb`)
+  const gltf = useSafeGLTF(`/models/${type}.glb`)
 
   // If GLTF model loaded successfully, use it
   if (gltf && gltf.scene) {
@@ -304,7 +304,7 @@ function Log({ position, scale, type }) {
 // Plant component that loads GLTF models with fallback
 function Plant({ position, scale, type }) {
   const meshRef = useRef()
-  const gltf = useSafeGLTF(`/src/assets/kenney_nature-kit/Models/GLTF format/${type}.glb`)
+  const gltf = useSafeGLTF(`/models/${type}.glb`)
   
   useFrame((state) => {
     if (meshRef.current) {
