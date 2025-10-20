@@ -61,7 +61,7 @@ const App = () => {
       )}
       
       <Header currentView={view} />
-      <main className={`flex-1 ${view === 'forest' ? '' : 'pb-20'} relative z-20`}>
+      <main className={`flex-1 ${view === 'forest' ? '' : 'pb-20'} relative z-20 flex flex-col`}>
         {renderView()}
       </main>
       <Footer currentView={view} />
