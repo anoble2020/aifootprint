@@ -3,15 +3,32 @@ import { Leaf, ExternalLink, ChevronUp, ChevronDown } from 'lucide-react'
 
 const Footer = ({ currentView = 'calculator' }) => {
   const [isExpanded, setIsExpanded] = useState(false)
-  const [isVisible, setIsVisible] = useState(true)
+  const [isDarkMode, setIsDarkMode] = useState(false)
+
+  // Detect dark mode changes
+  useEffect(() => {
+    const checkDarkMode = () => {
+      setIsDarkMode(document.documentElement.classList.contains('dark'))
+    }
+
+    // Check initial state
+    checkDarkMode()
+
+    // Listen for dark mode changes
+    const observer = new MutationObserver(checkDarkMode)
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class']
+    })
+
+    return () => observer.disconnect()
+  }, [])
 
   // Show footer on all pages, but start collapsed on forest/cta
   useEffect(() => {
     if (currentView === 'cta' || currentView === 'forest') {
-      setIsVisible(true)
       setIsExpanded(false)
     } else {
-      setIsVisible(true)
       setIsExpanded(true)
     }
   }, [currentView])
@@ -48,12 +65,12 @@ const Footer = ({ currentView = 'calculator' }) => {
               </p>
               <div className="flex items-center gap-4">
                 <a 
-                  href="https://www.pexels.com/video/video-of-forest-1448735/" 
+                  href={isDarkMode ? "https://www.pexels.com/video/the-night-sky-with-stars-and-trees-in-the-distance-25649447/" : "https://www.pexels.com/video/video-of-forest-1448735/"} 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="text-xs text-white/90 hover:text-white hover:underline inline-flex items-center drop-shadow-sm"
                 >
-                  Video by Ruvim Miksanskiy
+                  Video by {isDarkMode ? "Alexey Chudin" : "Ruvim Miksanskiy"}
                   <ExternalLink className="ml-1 h-3 w-3" />
                 </a>
                 <a 
@@ -105,12 +122,12 @@ const Footer = ({ currentView = 'calculator' }) => {
                 </p>
                 <div className="flex items-center gap-4">
                   <a 
-                    href="https://www.pexels.com/video/video-of-forest-1448735/" 
+                    href={isDarkMode ? "https://www.pexels.com/video/the-night-sky-with-stars-and-trees-in-the-distance-25649447/" : "https://www.pexels.com/video/video-of-forest-1448735/"} 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="text-xs text-muted-foreground hover:text-primary hover:underline inline-flex items-center"
                   >
-                    Video by Ruvim Miksanskiy
+                    Video by {isDarkMode ? "Alexey Chudin" : "Ruvim Miksanskiy"}
                     <ExternalLink className="ml-1 h-3 w-3" />
                   </a>
                   <a 
