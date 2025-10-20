@@ -109,7 +109,7 @@ const App = () => {
           onCanPlayThrough={handleVideoLoaded}
         >
           <source 
-            src={isDarkMode ? "/11903097_3840_2160_30fps.mp4" : "/1448735-uhd_4096_2160_24fps.mp4"} 
+            src={isDarkMode ? "https://videos.pexels.com/video-files/25649447/11903096_2560_1440_30fps.mp4" : "https://videos.pexels.com/video-files/1448735/1448735-uhd_2732_1440_24fps.mp4"} 
             type="video/mp4" 
           />
         </video>
@@ -127,7 +127,7 @@ const App = () => {
           style={{ minHeight: '100vh', minWidth: '100vw' }}
         >
           <source 
-            src={isDarkMode ? "/11903097_3840_2160_30fps.mp4" : "/1448735-uhd_4096_2160_24fps.mp4"} 
+            src={isDarkMode ? "https://videos.pexels.com/video-files/25649447/11903096_2560_1440_30fps.mp4" : "https://videos.pexels.com/video-files/1448735/1448735-uhd_2732_1440_24fps.mp4"} 
             type="video/mp4" 
           />
         </video>
