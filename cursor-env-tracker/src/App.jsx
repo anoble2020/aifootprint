@@ -51,7 +51,7 @@ const App = () => {
           className="fixed inset-0 w-full h-full object-cover z-0"
           style={{ minHeight: '100vh', minWidth: '100vw' }}
         >
-          <source src="/1448735-uhd_4096_2160_24fps.mp4" type="video/mp4" />
+          <source src="https://videos.pexels.com/video-files/1448735/1448735-uhd_2732_1440_24fps.mp4" type="video/mp4" />
         </video>
       )}
       
