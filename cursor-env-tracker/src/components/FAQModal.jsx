@@ -24,8 +24,7 @@ const FAQModal = ({ currentView = 'calculator' }) => {
           <div>
             <h3 className="font-semibold mb-2">What is this tool?</h3>
             <p className="text-gray-600">
-              AI Footprint Tracker helps you understand the environmental impact of your AI usage, 
-              specifically with Cursor. By analyzing your token consumption, we calculate the CO₂ 
+              AI Footprint Tracker helps you understand the environmental impact of your AI usage. By analyzing your token consumption, we calculate the CO₂ 
               emissions and visualize how many trees would be needed to offset your carbon footprint.
             </p>
           </div>
@@ -103,8 +102,8 @@ const FAQModal = ({ currentView = 'calculator' }) => {
             <h3 className="font-semibold mb-2">Limitations</h3>
             <p className="text-gray-600">
               These calculations are estimates based on current research. Actual emissions may vary 
-              based on specific model implementations, data center locations, and usage patterns. 
-              This tool is designed to raise awareness and encourage more sustainable AI practices.
+              based on specific model implementations, data center locations, usage patterns, tree species, and other factors. 
+              This tool is designed to raise awareness and encourage more sustainable AI and environmental practices.
             </p>
           </div>
         </div>
