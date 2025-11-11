@@ -33,7 +33,7 @@ const FAQModal = ({ currentView = 'calculator' }) => {
           <div>
             <h3 className="font-semibold mb-2">How do we calculate emissions?</h3>
             <p className="text-gray-600 mb-2">
-              Our calculations are based on research from Alexandre Lacoste and colleagues, who have 
+              Our calculations are based on research from Anurag Sridharan and other researchers, who have 
               quantified emissions from machine learning operations. We use a token-based approach 
               that considers:
             </p>
@@ -82,10 +82,19 @@ const FAQModal = ({ currentView = 'calculator' }) => {
                   rel="noopener noreferrer"
                   className="text-blue-600 hover:underline"
                 >
-                  Token-based carbon tracking methodology
+                  Sridharan, A. (2024). Token-based carbon tracking methodology
                 </a>
               </li>
-              <li>Lacoste, A., Luccioni, A., Schmidt, V., & Dandres, T. (2019). Quantifying the carbon emissions of machine learning</li>
+              <li>
+                <a
+                href="https://arxiv.org/pdf/1910.09700"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-600 hover:underline"
+                >
+                Lacoste, A., Luccioni, A., Schmidt, V., & Dandres, T. (2019). Quantifying the carbon emissions of machine learning
+                </a>
+              </li>
               <li>International Energy Agency (IEA) carbon intensity data</li>
             </ul>
           </div>
