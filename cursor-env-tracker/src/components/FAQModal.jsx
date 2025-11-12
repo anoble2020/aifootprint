@@ -18,13 +18,13 @@ const FAQModal = ({ currentView = 'calculator' }) => {
       </DialogTrigger>
       <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto bg-white" style={{ zIndex: 10001 }}>
         <DialogHeader>
-          <DialogTitle>About AI Footprint Tracker</DialogTitle>
+          <DialogTitle>About ai.footprint</DialogTitle>
         </DialogHeader>
         <div className="space-y-6 text-sm">
           <div>
             <h3 className="font-semibold mb-2">What is this tool?</h3>
             <p className="text-gray-600">
-              AI Footprint Tracker helps you understand the environmental impact of your AI usage. By analyzing your token consumption, we calculate the CO₂ 
+              ai.footprint helps you understand the environmental impact of your AI usage. By analyzing your token consumption, we calculate the CO₂ 
               emissions and visualize how many trees would be needed to offset your carbon footprint.
             </p>
           </div>
@@ -48,8 +48,7 @@ const FAQModal = ({ currentView = 'calculator' }) => {
             <h3 className="font-semibold mb-2">Our assumptions</h3>
             <p className="text-gray-600 mb-2">
               Based on current research, we estimate that each token consumes approximately 
-              1.5-9.5 grams of CO₂, depending on the model and infrastructure. For Cursor usage, 
-              we use conservative estimates that account for:
+              0.6-0.9 grams of CO₂, depending on the model and infrastructure. We use conservative estimates that account for:
             </p>
             <ul className="list-disc list-inside text-gray-600 space-y-1 ml-4">
               <li>Average model complexity for code generation</li>
