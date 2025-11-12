@@ -48,7 +48,7 @@ const FAQModal = ({ currentView = 'calculator' }) => {
             <h3 className="font-semibold mb-2">Our assumptions</h3>
             <p className="text-gray-600 mb-2">
               Based on current research, we estimate that each token consumes approximately 
-              0.6-0.9 grams of CO₂, depending on the model and infrastructure. We use conservative estimates that account for:
+              0.06-0.09 grams of CO₂, depending on the model and infrastructure. We use conservative estimates that account for:
             </p>
             <ul className="list-disc list-inside text-gray-600 space-y-1 ml-4">
               <li>Average model complexity for code generation</li>
